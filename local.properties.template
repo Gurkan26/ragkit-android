@@ -1,0 +1,20 @@
+## Local Developer Properties Template
+## Copy this file to 'local.properties' and fill in your values.
+## DO NOT commit 'local.properties' to version control!
+
+# Android SDK Directory
+sdk.dir=/path/to/your/Android/sdk
+
+# GPG Signing Configuration (for release signing)
+# signing.keyId: The last 8 characters of your GPG key ID
+signing.keyId=
+# signing.password: The passphrase for your GPG private key
+signing.password=
+# signing.key: The ASCII-armored private key content or path to secret key ring
+signing.key=
+# signing.secretKeyRingFile=/path/to/secring.gpg
+
+# Sonatype OSSRH / Maven Central Credentials
+ossrhUsername=
+ossrhPassword=
+sonatypeStagingProfileId=
