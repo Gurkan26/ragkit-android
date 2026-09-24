@@ -10,6 +10,16 @@
 
 ---
 
+## 📱 Screenshots & Demo
+
+<p align="center">
+  <img src="docs/images/ragkit_home.png" width="320" alt="RagKit Home & On-Device Indexing" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/images/ragkit_search.png" width="320" alt="RagKit On-Device Semantic Search" />
+</p>
+
+---
+
 ## 🌟 Key Features
 
 - 🧠 **100% On-Device AI**: Zero server round-trips. User data never leaves the device.
