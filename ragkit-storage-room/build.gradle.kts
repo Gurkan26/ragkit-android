@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
     `maven-publish`
     signing
 }
@@ -36,7 +37,7 @@ dependencies {
     implementation(project(":ragkit-core"))
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.bundles.unit.test)
     testRuntimeOnly(libs.junit.jupiter.engine)

@@ -2,7 +2,7 @@
 agp = "9.3.3"
 kotlin = "2.2.10"
 coroutines = "1.9.0"
-room = "2.6.1"
+room = "2.7.2"
 mediapipe = "0.10.14"
 composeBom = "2026.02.01"
 coreKtx = "1.10.1"
@@ -17,6 +17,7 @@ mockk = "1.13.13"
 turbine = "1.2.0"
 espressoCore = "3.5.1"
 binaryCompatibilityValidator = "0.16.3"
+ksp = "2.2.10-2.0.2"
 
 [libraries]
 # AndroidX Core & Lifecycle
@@ -85,3 +86,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

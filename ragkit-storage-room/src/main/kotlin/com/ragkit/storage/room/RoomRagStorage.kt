@@ -90,6 +90,7 @@ class RoomRagStorage(
         runCatching {
             dao.deleteChunksByDocumentId(documentId)
             dao.deleteDocumentById(documentId)
+            Unit
         }.recoverCatching { error ->
             throw RagException.StorageException("Failed to delete document $documentId: ${error.message}", error)
         }
@@ -98,6 +99,7 @@ class RoomRagStorage(
     override suspend fun deleteBySource(source: String): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             dao.deleteDocumentsBySource(source)
+            Unit
         }.recoverCatching { error ->
             throw RagException.StorageException("Failed to delete source $source: ${error.message}", error)
         }

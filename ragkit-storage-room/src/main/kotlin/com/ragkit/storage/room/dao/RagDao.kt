@@ -37,13 +37,13 @@ interface RagDao {
     suspend fun getAllChunks(): List<ChunkEntity>
 
     @Query("DELETE FROM documents WHERE id = :documentId")
-    suspend fun deleteDocumentById(documentId: String)
+    suspend fun deleteDocumentById(documentId: String): Int
 
     @Query("DELETE FROM documents WHERE source = :source")
-    suspend fun deleteDocumentsBySource(source: String)
+    suspend fun deleteDocumentsBySource(source: String): Int
 
     @Query("DELETE FROM chunks WHERE document_id = :documentId")
-    suspend fun deleteChunksByDocumentId(documentId: String)
+    suspend fun deleteChunksByDocumentId(documentId: String): Int
 
     @Query("SELECT COUNT(*) FROM documents")
     suspend fun getDocumentCount(): Int
@@ -52,10 +52,10 @@ interface RagDao {
     suspend fun getChunkCount(): Int
 
     @Query("DELETE FROM chunks")
-    suspend fun clearChunks()
+    suspend fun clearChunks(): Int
 
     @Query("DELETE FROM documents")
-    suspend fun clearDocuments()
+    suspend fun clearDocuments(): Int
 
     /**
      * Purges all chunks and documents in an atomic transaction.
