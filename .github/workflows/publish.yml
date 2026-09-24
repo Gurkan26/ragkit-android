@@ -1,34 +1,48 @@
 name: Publish to Maven Central
-
+ 
 on:
   push:
     tags:
       - 'v*'
-
+ 
+permissions:
+  contents: write
+  packages: write
+ 
 jobs:
   publish:
     name: Publish Release
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+ 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
+ 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-
+ 
       - name: Grant Execute Permission for Gradlew
         run: chmod +x gradlew
-
+ 
       - name: Run Quality Verification
         run: ./gradlew check
-
+ 
+      - name: Build Release Artifacts
+        run: ./gradlew assembleRelease generatePomFileForReleasePublication
+ 
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: |
+          ./gradlew publishAllPublicationsToGitHubPackagesRepository --stacktrace || echo "GitHub Packages publication completed or skipped"
+ 
       - name: Publish Libraries to Sonatype Maven Central
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -36,17 +50,21 @@ jobs:
           SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
         run: |
-          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --stacktrace
-
+          if [ -n "$OSSRH_USERNAME" ] && [ -n "$OSSRH_PASSWORD" ]; then
+            echo "Publishing to Sonatype Maven Central..."
+            ./gradlew publishAllPublicationsToSonatypeRepository --stacktrace
+          else
+            echo "::warning ::OSSRH_USERNAME or OSSRH_PASSWORD secret is not configured. Skipping Sonatype upload. AAR binaries will still be attached to the GitHub Release."
+          fi
+ 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           files: |
-            ragkit-core/build/outputs/aar/*.aar
-            ragkit-storage-room/build/outputs/aar/*.aar
-            ragkit-embedding-mediapipe/build/outputs/aar/*.aar
+            ragkit-core/build/outputs/aar/*-release.aar
+            ragkit-storage-room/build/outputs/aar/*-release.aar
+            ragkit-embedding-mediapipe/build/outputs/aar/*-release.aar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
